@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Login and Registration Form in HTML & CSS | CodingLab </title>
+    <link rel="stylesheet" href="public/style.css">
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+    <script>
+        // Fonction pour gérer la soumission du formulaire avec Ajax
+        $(document).ready(function() {
+            $('#registerForm').submit(function(event) {
+                // Empêcher le comportement par défaut du formulaire
+                event.preventDefault();
+
+                // Récupérer les valeurs du formulaire
+                const nom = $('#nom').val();
+                const email = $('#email').val();
+                const password = $('#password').val();
+                const role = $('#role').val();
+
+                // Envoyer la requête Ajax au serveur
+                $.ajax({
+                    type: 'POST',
+                    url: '/register',
+                    data: JSON.stringify({ nom, email, password, role }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        // Afficher le message de réponse dans une alerte
+                        alert(response);
+                    },
+                    error: function(error) {
+                        console.error('Erreur lors de la soumission du formulaire :', error);
+                        alert('Erreur lors de la soumission du formulaire.');
+                    }
+                });
+            });
+        });
+    </script>
+   </head>
+<body>
+  <div class="container">
+    <input type="checkbox" id="flip">
+    <div class="cover">
+      <div class="front">
+        <img src="public/images/admin.jpg" alt="">
+        <div class="text">
+          <span class="text-1">Every new friend is a <br> new adventure</span>
+          <span class="text-2">Let's get connected</span>
+        </div>
+      </div>
+      <div class="back">
+        <!--<img class="backImg" src="images/backImg.jpg" alt="">-->
+        <div class="text">
+          <span class="text-1">Complete miles of journey <br> with one step</span>
+          <span class="text-2">Let's get started</span>
+        </div>
+      </div>
+    </div>
+    <div class="forms">
+        <div class="form-content">
+          <div class="login-form">
+            <div class="title">Login</div>
+          <form action="/login"  method="post">
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input type="text" name="mail" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input type="password"  name="password" placeholder="Enter your password" required>
+              </div>
+              <div class="text"><a href="#">Forgot password?</a></div>
+              <div class="button input-box">
+                <input type="submit" value="Sumbit">
+              </div>
+              <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
+            </div>
+        </form>
+      </div>
+        <div class="signup-form">
+          <div class="title">Signup</div>
+          
+        <form id="registerForm" action="/register" method="post">
+          
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-user"></i>
+                <input type="text" id="nom" name="nom" placeholder="Enter your name" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input type="text" id="email" name="email" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password"  name="password" placeholder="Enter your password" required>
+              </div>
+              <label for="role">Role:</label>
+        <select id="role" name="role" required>
+            <option value="user" >User</option>
+            <option value="admin">Admin</option>
+        </select><br><br>
+              <div class="button input-box">
+                <input type="submit" value="Sumbit">
+              </div>
+              <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
+            </div>
+      </form>
+    </div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>
