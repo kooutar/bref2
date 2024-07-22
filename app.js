@@ -5,6 +5,7 @@ var cors=require('cors');
 var path=require('path');
 const mysql = require('mysql2');//module pour interagir avec une base de données MySQL
 const app = express();
+const multer = require('multer');
 
 //Configuration de l'application
 app.use(bodyParser.json());// Utilisation de body-parser pour analyser les requêtes JSON
@@ -33,6 +34,11 @@ db.connect((err) => {
 if (err) throw err;
 console.log('Connected to database');
 });
+
+
+// Configurer multer pour gérer les téléchargements de fichiers
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 
 // Route pour gérer la soumission du formulaire d'inscription
@@ -135,7 +141,7 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  const { nom, email, password, role } = req.body;
+  const { nom, email, password } = req.body;
 
   // Vérifier si l'email existe déjà en base de données
   const sql = 'SELECT * FROM users WHERE email = ?';
@@ -149,6 +155,7 @@ app.post('/register', (req, res) => {
       // L'email existe déjà en base de données
       return res.send('E-mail déjà enregistré.');
     } else {
+    var role = 'user';
       // L'email n'existe pas en base de données, procéder à l'inscription
       const insertSql = 'INSERT INTO users (nom, email, password, role) VALUES (?, ?, ?, ?)';
       db.query(insertSql, [nom, email, password, role], (err, result) => {
@@ -164,6 +171,46 @@ app.post('/register', (req, res) => {
 });
 
 
+// Route pour gérer les téléchargements de fichiers
+app.post('/upload', upload.single('image'), (req, res) => {
+  const title = req.body.title;
+  const description = req.body.description;
+  const image = req.file.buffer;
+
+  const query = 'INSERT INTO phenological_stages (name, description, image) VALUES (?, ?, ?)';
+  db.query(query, [title, description, image], (err, results) => {
+    if (err) throw err;
+    res.send('Image uploaded successfully');
+  });
+});
+
+// Route pour afficher la page avec les images
+app.get('/images', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'stade'));
+});
+
+// Route pour récupérer une image spécifique
+app.get('/image/:id', (req, res) => {
+  const id = req.params.id;
+  db.query('SELECT image FROM phenological_stages WHERE id = ?', [id], (err, results) => {
+    if (err) throw err;
+    if (results.length > 0) {
+      res.writeHead(200, {'Content-Type': 'image/jpeg'});
+      res.end(results[0].data);
+    } else {
+      res.status(404).send('Image not found');
+    }
+  });
+});
+
+// Route pour obtenir les IDs des images
+app.get('/get-image-ids', (req, res) => {
+  db.query('SELECT id FROM phenological_stages', (err, results) => {
+    if (err) throw err;
+    res.json(results.map(row => row.id));
+  });
+});
+
 // Route pour afficher l'agenda (pour les admins)
 
 
@@ -175,6 +222,19 @@ app.get('/agenda', (req, res) => {
 // Route pour afficher l'accueil (pour les utilisateurs normaux)
 app.get('/acceuil', (req, res) => {
   res.render('acceuil');
+});
+
+
+app.get('/update', (req, res) => {
+  res.render('update');
+});
+
+app.get('/stade', (req, res) => {
+  const query = 'SELECT  name, description, image FROM phenological_stages';
+  db.query(query, (err, results) => {
+    if (err) throw err;
+    res.render('stade', { images: results });
+  });
 });
 
 

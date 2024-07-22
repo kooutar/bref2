@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="public/update.css">
+	<title>Input Image With Preview Image</title>
+   
+</head>
+
+<body>
+    <!-- <form action="/upload" method="post" enctype="multipart/form-data">
+	<div class="container">
+		<input type="file" id="file" accept="image/*" hidden>
+		<div class="img-area" data-img="">
+			<i class='bx bxs-cloud-upload icon'></i>
+			<h3>Upload Image</h3>
+			<p>Image size must be less than <span>2MB</span></p>
+		</div>
+		<button class="select-image">Select Image</button>
+  <div class="form-floating">
+  <textarea class="form-control" placeholder="description" id="floatingTextarea2" style="height: 100px" rows="10" cols="50"></textarea>
+ 
+</div>	</div>
+</form>
+<script src="public/js/update.js"></script> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Image</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <h1>Upload Image</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Select Image</label>
+        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

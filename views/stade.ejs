@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Images</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <h1>Images</h1>
+    <div class="row">
+      <% images.forEach(image => { %>
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <img src="image:image/jpeg;base64,<%= image.image.toString('base64') %>" class="card-img-top" alt="<%= image.name %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= image.name %></h5>
+              <p class="card-text"><%= image.description %></p>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</body>
+</html>
